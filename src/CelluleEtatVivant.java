@@ -1,10 +1,10 @@
 public class CelluleEtatVivant implements CelluleEtat {
-    private CelluleEtatVivant instanceUnique = new CelluleEtatVivant();
+    private static CelluleEtatVivant instanceUnique = new CelluleEtatVivant();
 
     private CelluleEtatVivant(){}
 
 
-    public CelluleEtatVivant getInstance(){
+    public static CelluleEtatVivant getInstance(){
         return instanceUnique;
     }
 
@@ -17,12 +17,12 @@ public class CelluleEtatVivant implements CelluleEtat {
 
     @Override
     public CelluleEtat meurt() {
-        return null;
+        return CelluleEtatMort.getInstance();
     }
 
 
     @Override
     public boolean estVivante() {
-        return false;
+        return true;
     }
 }

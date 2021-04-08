@@ -1,20 +1,20 @@
 public class CelluleEtatMort implements CelluleEtat {
-    private CelluleEtatMort instanceUnique = new CelluleEtatMort();
+    private static CelluleEtatMort instanceUnique = new CelluleEtatMort();
 
     private CelluleEtatMort(){}
 
-    public CelluleEtatMort getInstance() {
+    public static CelluleEtatMort getInstance() {
         return instanceUnique;
     }
 
     @Override
     public CelluleEtat vit() {
-        return null;
+        return CelluleEtatVivant.getInstance();
     }
 
     @Override
     public CelluleEtat meurt() {
-        return null;
+        return this;
     }
 
     @Override
