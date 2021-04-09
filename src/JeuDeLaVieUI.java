@@ -8,7 +8,7 @@ public class JeuDeLaVieUI extends JFrame implements Observateur  {
         super("Le super jeu de la vie");
         this.jeu = jeu;
 
-        this.setSize(new Dimension(jeu.getXMax()*3, jeu.getYMax()*3));// regler la taille
+        this.setSize(new Dimension(600, 700));// regler la taille
         this.setLocationRelativeTo(null); // centrer la fenetre
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //gestion de la fermeture de la fenetre
         this.setVisible(true); // afficher
@@ -16,8 +16,10 @@ public class JeuDeLaVieUI extends JFrame implements Observateur  {
 
     public void actualise() {
         repaint();
+
+
         try {
-            Thread.sleep(1000);
+            Thread.sleep(300);
             System.out.println("pause");
         } catch (InterruptedException ie) {
            System.out.println("Erreur : "+ie);
@@ -30,7 +32,7 @@ public class JeuDeLaVieUI extends JFrame implements Observateur  {
         for(int x = 0; x < jeu.getXMax(); x++){
             for(int y = 0; y < jeu.getYMax(); y++){
                 if( jeu.getGrilleXY(x, y) != null && jeu.getGrilleXY(x, y).estVivante() ){
-                    g.fillOval(x*3, y*3, 3, 3);
+                    g.fillRect(x*4, y*4, 3, 3);
                 }
             }
         }

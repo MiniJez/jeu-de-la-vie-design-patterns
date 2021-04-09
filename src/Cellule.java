@@ -9,35 +9,23 @@ public class Cellule {
         this.etat = etat;
     }
 
-    public int nombreVoisinesVivantes(JeuDeLaVie jeu){
-        int nbVoisin = 0;
+    public int nombreVoisinesVivantes(JeuDeLaVie g) {
+        int nbVoisins = 0;
 
-        for(int numCol = x-1; numCol <= x+1; numCol++){
-            for(int numLigne = y-1; numLigne <= y+1; numLigne++){
-
-                if(numCol != x && numLigne != y){
-                    Cellule cellule = jeu.getGrilleXY(numCol, numLigne);
-
-                    if(cellule != null && cellule.estVivante()){
-//                    if(cellule.estVivante()){
-                        nbVoisin++;
+        int limiteEnBas = Math.min(x + 1, g.getXMax() - 1);
+        int limiteADroite = Math.min(y + 1, g.getYMax() - 1);
+        for (int i = Math.max(0, x - 1); i <= limiteEnBas; i++) {
+            for (int j = Math.max(0, y - 1); j <= limiteADroite; j++) {
+                Cellule voisin = g.getGrilleXY(i, j);
+                if(voisin != null) {
+                    if (!(i == x && j == y ) && (voisin.estVivante())) {
+                        nbVoisins++;
                     }
                 }
 
             }
         }
-//        if( jeu.getGrilleXY(x-1, y-1) != null && jeu.getGrilleXY(x-1, y-1).estVivante() ) nbVoisin++;
-//        if( jeu.getGrilleXY(x,      y-1) != null && jeu.getGrilleXY(x,      y-1).estVivante() ) nbVoisin++;
-//        if( jeu.getGrilleXY(x+1, y-1) != null && jeu.getGrilleXY(x+1, y-1).estVivante() ) nbVoisin++;
-//        if( jeu.getGrilleXY(x-1,    y) != null && jeu.getGrilleXY(x-1,      y).estVivante() ) nbVoisin++;
-//        if( jeu.getGrilleXY(x+1,    y) != null && jeu.getGrilleXY(x+1,      y).estVivante() ) nbVoisin++;
-//        if( jeu.getGrilleXY(x-1, y+1) != null && jeu.getGrilleXY(x-1, y+1).estVivante() ) nbVoisin++;
-//        if( jeu.getGrilleXY(x,      y+1) != null && jeu.getGrilleXY(x,     y+1).estVivante() ) nbVoisin++;
-//        if( jeu.getGrilleXY(x+1, y+1) != null && jeu.getGrilleXY(x+1, y+1).estVivante() ) nbVoisin++;
-
-
-
-        return nbVoisin;
+        return nbVoisins;
     }
 
     public void vit(){

@@ -12,7 +12,7 @@ public class VisiteurClassique extends Visiteur {
             this.jeu.ajouteCommande(new CommandeMeurt(cellule));
         }
 //        else{
-//            Visiteur.jeu.ajouteCommande(new CommandeVit(cellule));
+//            this.jeu.ajouteCommande(new CommandeVit(cellule));
 //        }
 
 
@@ -24,9 +24,7 @@ public class VisiteurClassique extends Visiteur {
             this.jeu.ajouteCommande(new CommandeVit(cellule));
         }
 //        else{
-//            Visiteur.jeu.ajouteCommande(new CommandeMeurt(cellule));
+//            this.jeu.ajouteCommande(new CommandeMeurt(cellule));
 //        }
-
-
     }
 }

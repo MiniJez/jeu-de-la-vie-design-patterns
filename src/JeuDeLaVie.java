@@ -1,29 +1,33 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class JeuDeLaVie implements Observable {
     private Cellule[][] grille;
     private int xMax;
     private int yMax;
+    private int num;
+
     private List<Observateur> observateurs;
     private List<Commande> commandes;
+
     private Visiteur visiteur;
 
     public JeuDeLaVie() {
         this.observateurs = new ArrayList<>();
         this.commandes = new ArrayList<>();
+        this.num = 0;
     }
 
     public static void main(String[] args) {
         JeuDeLaVie jeu = new JeuDeLaVie();
-        jeu.setXMax(150);
-        jeu.setYMax(150);
-        jeu.initialiseGrille();
-        jeu.setVisiteur(new VisiteurClassique(jeu));
-
         JeuDeLaVieUI fenetre = new JeuDeLaVieUI(jeu);
+        jeu.setVisiteur(new VisiteurClassique(jeu));
         jeu.attacheObservateur(fenetre);
 
+        jeu.setXMax(200);
+        jeu.setYMax(250);
+        jeu.initialiseGrille();
 
         while (fenetre.isVisible()){
             jeu.calculerGenerationSuivante();
@@ -36,7 +40,9 @@ public class JeuDeLaVie implements Observable {
 
         for(int x = 0; x < xMax-1; x++){
             for(int y = 0; y < yMax-1; y++){
-                int rand = (int) (0 + (Math.random() * 2));
+//                int rand = (int) (0 + (Math.random() * 2));
+                Random random = new Random();
+                int rand = random.nextInt() % 2;
 
                 if(rand == 0) grille[x][y] = new Cellule(x, y, CelluleEtatMort.getInstance());
                 else grille[x][y] = new Cellule(x, y, CelluleEtatVivant.getInstance());
@@ -46,6 +52,7 @@ public class JeuDeLaVie implements Observable {
     }
 
     public Cellule getGrilleXY(int x, int y){
+        // Vérification qu'on est bien dans la grille
         if( (x >= 0) && (y >= 0) && (x <= xMax) && (y <= yMax) ){
             return this.grille[x][y];
         }
@@ -114,6 +121,6 @@ public class JeuDeLaVie implements Observable {
         distribueVisiteur();
         executeCommandes();
         notifieObservateurs();
-
+        System.out.println("Generation "+num++);
     }
 }
