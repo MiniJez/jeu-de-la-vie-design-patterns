@@ -11,10 +11,20 @@ public class Cellule {
 
     public int nombreVoisinesVivantes(JeuDeLaVie jeu){
         int nbVoisin = 0;
-        int xMax = jeu.getxMax();
-        int yMax = jeu.getyMax();
 
+        for(int numCol = x-1; numCol <= x+1; numCol++){
+            for(int numLigne = y-1; numLigne <= y+1; numLigne++){
 
+                if(numCol != x && numLigne != y){
+                    Cellule cellule = jeu.getGrilleXY(numCol, numLigne);
+
+                    if(cellule != null && cellule.estVivante()){
+                        nbVoisin++;
+                    }
+                }
+
+            }
+        }
 
         return nbVoisin;
     }
