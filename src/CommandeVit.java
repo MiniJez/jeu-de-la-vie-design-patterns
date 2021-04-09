@@ -6,6 +6,6 @@ public class CommandeVit extends Commande{
 
     @Override
     void executer() {
-
+        Commande.cellule.vit();
     }
 }

@@ -7,10 +7,9 @@ public class JeuDeLaVie implements Observable {
     private int yMax;
     private List<Observateur> observateurs;
     private List<Commande> commandes;
+    private Visiteur visiteur;
 
-    public JeuDeLaVie(int xMax, int yMax) {
-        this.xMax = xMax;
-        this.yMax = yMax;
+    public JeuDeLaVie() {
         this.observateurs = new ArrayList<>();
         this.commandes = new ArrayList<>();
         this.grille = new Cellule[xMax][yMax];
@@ -18,11 +17,20 @@ public class JeuDeLaVie implements Observable {
     }
 
     public static void main(String[] args) {
-        JeuDeLaVie jeu = new JeuDeLaVie(200,200);
-        JeuDeLaVieUI fenetre = new JeuDeLaVieUI(jeu);
+        JeuDeLaVie jeu = new JeuDeLaVie();
+        jeu.setXMax(200);
+        jeu.setYMax(200);
+        jeu.setVisiteur(new VisiteurClassique(jeu));
 
+        JeuDeLaVieUI fenetre = new JeuDeLaVieUI(jeu);
         jeu.attacheObservateur(fenetre);
-        jeu.notifieObservateurs();
+
+
+        while (true){
+            jeu.calculerGenerationSuivante();
+            jeu.notifieObservateurs();
+        }
+
     }
 
     public void initialiseGrille() {
@@ -37,7 +45,7 @@ public class JeuDeLaVie implements Observable {
     }
 
     public Cellule getGrilleXY(int x, int y){
-        if( (x >= 0) && (y >= 0) && (x < xMax) && (y < yMax) ){
+        if( (x >= 0) && (y >= 0) && (x <= xMax) && (y <= yMax) ){
             return this.grille[x][y];
         }
         else{
@@ -87,5 +95,23 @@ public class JeuDeLaVie implements Observable {
             c.executer();
         }
         this.commandes.clear();
+    }
+
+    public void distribueVisiteur(){
+        for(int x = 0; x < xMax; x++){
+            for(int y = 0; y < yMax; y++){
+                getGrilleXY(x,y).accepte(visiteur);
+            }
+        }
+    }
+
+    public void setVisiteur(Visiteur visiteur) {
+        this.visiteur = visiteur;
+    }
+
+    public void calculerGenerationSuivante(){
+        distribueVisiteur();
+        executeCommandes();
+        notifieObservateurs();
     }
 }

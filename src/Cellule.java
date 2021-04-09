@@ -19,12 +19,23 @@ public class Cellule {
                     Cellule cellule = jeu.getGrilleXY(numCol, numLigne);
 
                     if(cellule != null && cellule.estVivante()){
+//                    if(cellule.estVivante()){
                         nbVoisin++;
                     }
                 }
 
             }
         }
+//        if( jeu.getGrilleXY(x-1, y-1) != null && jeu.getGrilleXY(x-1, y-1).estVivante() ) nbVoisin++;
+//        if( jeu.getGrilleXY(x,      y-1) != null && jeu.getGrilleXY(x,      y-1).estVivante() ) nbVoisin++;
+//        if( jeu.getGrilleXY(x+1, y-1) != null && jeu.getGrilleXY(x+1, y-1).estVivante() ) nbVoisin++;
+//        if( jeu.getGrilleXY(x-1,    y) != null && jeu.getGrilleXY(x-1,      y).estVivante() ) nbVoisin++;
+//        if( jeu.getGrilleXY(x+1,    y) != null && jeu.getGrilleXY(x+1,      y).estVivante() ) nbVoisin++;
+//        if( jeu.getGrilleXY(x-1, y+1) != null && jeu.getGrilleXY(x-1, y+1).estVivante() ) nbVoisin++;
+//        if( jeu.getGrilleXY(x,      y+1) != null && jeu.getGrilleXY(x,     y+1).estVivante() ) nbVoisin++;
+//        if( jeu.getGrilleXY(x+1, y+1) != null && jeu.getGrilleXY(x+1, y+1).estVivante() ) nbVoisin++;
+
+
 
         return nbVoisin;
     }
@@ -39,5 +50,9 @@ public class Cellule {
 
     public boolean estVivante(){
         return this.etat.estVivante();
+    }
+
+    public void accepte(Visiteur visiteur){
+        this.etat.accepte(visiteur, this);
     }
 }

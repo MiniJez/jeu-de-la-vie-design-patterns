@@ -6,6 +6,6 @@ public class CommandeMeurt extends Commande{
 
     @Override
     void executer() {
-
+        Commande.cellule.meurt();
     }
 }
