@@ -3,7 +3,7 @@ public class CelluleEtatVivant implements CelluleEtat {
 
     private CelluleEtatVivant(){}
 
-    public static CelluleEtatVivant getInstance(){
+    public static CelluleEtat getInstance(){
         if (instanceUnique == null) return new CelluleEtatVivant();
         return instanceUnique;
     }

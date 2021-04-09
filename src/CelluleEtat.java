@@ -1,5 +1,5 @@
 public interface CelluleEtat {
-    public CelluleEtat vit();
-    public CelluleEtat meurt();
-    public boolean estVivante();
+     CelluleEtat vit();
+     CelluleEtat meurt();
+     boolean estVivante();
 }
