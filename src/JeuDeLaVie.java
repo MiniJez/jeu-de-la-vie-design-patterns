@@ -12,43 +12,44 @@ public class JeuDeLaVie implements Observable {
     public JeuDeLaVie() {
         this.observateurs = new ArrayList<>();
         this.commandes = new ArrayList<>();
-        this.grille = new Cellule[xMax][yMax];
-        this.initialiseGrille();
     }
 
     public static void main(String[] args) {
         JeuDeLaVie jeu = new JeuDeLaVie();
-        jeu.setXMax(200);
-        jeu.setYMax(200);
+        jeu.setXMax(150);
+        jeu.setYMax(150);
+        jeu.initialiseGrille();
         jeu.setVisiteur(new VisiteurClassique(jeu));
 
         JeuDeLaVieUI fenetre = new JeuDeLaVieUI(jeu);
         jeu.attacheObservateur(fenetre);
 
 
-        while (true){
+        while (fenetre.isVisible()){
             jeu.calculerGenerationSuivante();
-            jeu.notifieObservateurs();
         }
 
     }
 
     public void initialiseGrille() {
-        for(int x = 0; x < xMax; x++){
-            for(int y = 0; y < yMax; y++){
+        this.grille = new Cellule[xMax][yMax];
+
+        for(int x = 0; x < xMax-1; x++){
+            for(int y = 0; y < yMax-1; y++){
                 int rand = (int) (0 + (Math.random() * 2));
 
                 if(rand == 0) grille[x][y] = new Cellule(x, y, CelluleEtatMort.getInstance());
                 else grille[x][y] = new Cellule(x, y, CelluleEtatVivant.getInstance());
             }
         }
+        System.out.println("Initialisation OK");
     }
 
     public Cellule getGrilleXY(int x, int y){
         if( (x >= 0) && (y >= 0) && (x <= xMax) && (y <= yMax) ){
             return this.grille[x][y];
         }
-        else{
+        else {
             return null;
         }
     }
@@ -98,8 +99,8 @@ public class JeuDeLaVie implements Observable {
     }
 
     public void distribueVisiteur(){
-        for(int x = 0; x < xMax; x++){
-            for(int y = 0; y < yMax; y++){
+        for(int x = 0; x < xMax-1; x++){
+            for(int y = 0; y < yMax-1; y++){
                 getGrilleXY(x,y).accepte(visiteur);
             }
         }
@@ -113,5 +114,6 @@ public class JeuDeLaVie implements Observable {
         distribueVisiteur();
         executeCommandes();
         notifieObservateurs();
+
     }
 }

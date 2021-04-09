@@ -6,21 +6,27 @@ public class VisiteurClassique extends Visiteur {
 
     @Override
     void visiteCelluleVivante(Cellule cellule) {
-        int nbVoisins = cellule.nombreVoisinesVivantes(Visiteur.jeu);
+        int nbVoisins = cellule.nombreVoisinesVivantes(this.jeu);
 
         if(nbVoisins < 2 || nbVoisins > 3){
-            cellule.meurt();
+            this.jeu.ajouteCommande(new CommandeMeurt(cellule));
         }
+//        else{
+//            Visiteur.jeu.ajouteCommande(new CommandeVit(cellule));
+//        }
 
-        Visiteur.jeu.ajouteCommande(new CommandeVit(cellule));
+
     }
 
     @Override
     void visiteCelluleMorte(Cellule cellule) {
-        if(cellule.nombreVoisinesVivantes(Visiteur.jeu) == 3){
-            cellule.vit();
+        if(cellule.nombreVoisinesVivantes(this.jeu) == 3){
+            this.jeu.ajouteCommande(new CommandeVit(cellule));
         }
+//        else{
+//            Visiteur.jeu.ajouteCommande(new CommandeMeurt(cellule));
+//        }
 
-        Visiteur.jeu.ajouteCommande(new CommandeMeurt(cellule));
+
     }
 }

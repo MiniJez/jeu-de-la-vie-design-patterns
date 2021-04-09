@@ -1,5 +1,5 @@
 public abstract class Commande {
-    protected static Cellule cellule;
+    protected Cellule cellule;
 
     abstract void executer();
 }

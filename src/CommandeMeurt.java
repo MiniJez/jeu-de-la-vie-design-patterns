@@ -1,11 +1,11 @@
 public class CommandeMeurt extends Commande{
 
     public CommandeMeurt(Cellule c){
-        Commande.cellule = c;
+        this.cellule = c;
     }
 
     @Override
     void executer() {
-        Commande.cellule.meurt();
+        this.cellule.meurt();
     }
 }

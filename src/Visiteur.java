@@ -1,8 +1,8 @@
 public abstract class Visiteur {
-    protected static JeuDeLaVie jeu;
+    protected JeuDeLaVie jeu;
 
     public Visiteur(JeuDeLaVie jeu){
-        Visiteur.jeu = jeu;
+        this.jeu = jeu;
     }
 
     abstract void visiteCelluleVivante(Cellule cellule);

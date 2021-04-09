@@ -10,12 +10,18 @@ public class JeuDeLaVieUI extends JFrame implements Observateur  {
 
         this.setSize(new Dimension(jeu.getXMax()*3, jeu.getYMax()*3));// regler la taille
         this.setLocationRelativeTo(null); // centrer la fenetre
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //gestion de la fermeture de la fenetre
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //gestion de la fermeture de la fenetre
         this.setVisible(true); // afficher
     }
 
     public void actualise() {
         repaint();
+        try {
+            Thread.sleep(1000);
+            System.out.println("pause");
+        } catch (InterruptedException ie) {
+           System.out.println("Erreur : "+ie);
+        }
     }
 
     public void paint(Graphics g) {
@@ -23,7 +29,7 @@ public class JeuDeLaVieUI extends JFrame implements Observateur  {
 
         for(int x = 0; x < jeu.getXMax(); x++){
             for(int y = 0; y < jeu.getYMax(); y++){
-                if( jeu.getGrilleXY(x, y).estVivante() ){
+                if( jeu.getGrilleXY(x, y) != null && jeu.getGrilleXY(x, y).estVivante() ){
                     g.fillOval(x*3, y*3, 3, 3);
                 }
             }

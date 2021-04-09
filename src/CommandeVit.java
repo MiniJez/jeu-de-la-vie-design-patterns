@@ -1,11 +1,11 @@
 public class CommandeVit extends Commande{
 
     public CommandeVit(Cellule c){
-        Commande.cellule = c;
+        this.cellule = c;
     }
 
     @Override
     void executer() {
-        Commande.cellule.vit();
+        this.cellule.vit();
     }
 }
