@@ -1,3 +1,8 @@
+package jeuDeLaVie.cellules;
+
+import jeuDeLaVie.jeu.JeuDeLaVie;
+import jeuDeLaVie.visiteurs.Visiteur;
+
 public class Cellule {
     private CelluleEtat etat;
     private int x;

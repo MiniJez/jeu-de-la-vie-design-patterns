@@ -1,3 +1,7 @@
+package jeuDeLaVie.cellules;
+
+import jeuDeLaVie.visiteurs.Visiteur;
+
 public interface CelluleEtat {
      CelluleEtat vit();
      CelluleEtat meurt();

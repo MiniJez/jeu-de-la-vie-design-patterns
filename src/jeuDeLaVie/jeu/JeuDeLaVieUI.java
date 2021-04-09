@@ -1,7 +1,11 @@
+package jeuDeLaVie.jeu;
+
+import jeuDeLaVie.observateurs.Observateur;
+
 import javax.swing.JFrame;
 import java.awt.*;
 
-public class JeuDeLaVieUI extends JFrame implements Observateur  {
+public class JeuDeLaVieUI extends JFrame implements Observateur {
     private JeuDeLaVie jeu;
 
     public JeuDeLaVieUI(JeuDeLaVie jeu) {

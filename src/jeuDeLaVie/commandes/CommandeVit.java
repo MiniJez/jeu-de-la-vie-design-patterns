@@ -1,3 +1,7 @@
+package jeuDeLaVie.commandes;
+
+import jeuDeLaVie.cellules.Cellule;
+
 public class CommandeVit extends Commande{
 
     public CommandeVit(Cellule c){
@@ -5,7 +9,7 @@ public class CommandeVit extends Commande{
     }
 
     @Override
-    void executer() {
+    public void executer() {
         this.cellule.vit();
     }
 }

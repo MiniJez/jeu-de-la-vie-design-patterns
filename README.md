@@ -7,9 +7,9 @@ Projet réalisé dans le cadre du module "Design Pattern" de la 3ème année de 
 * Implémenter le jeu selon 5 Design Patterns :
   * Etat (*State*)
   * Singleton
-  * Observateur (*Observer*)
-  * Commande (*Command*)
-  * Visiteur (*Visitor*)
+  * jeuDeLaVie.observateurs.Observateur (*Observer*)
+  * jeuDeLaVie.commandes.Commande (*Command*)
+  * jeuDeLaVie.visiteurs.Visiteur (*Visitor*)
 
 ### Principe :
 

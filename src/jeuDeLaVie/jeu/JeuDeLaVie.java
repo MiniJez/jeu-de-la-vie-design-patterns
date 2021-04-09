@@ -1,3 +1,14 @@
+package jeuDeLaVie.jeu;
+
+import jeuDeLaVie.cellules.Cellule;
+import jeuDeLaVie.cellules.CelluleEtatMort;
+import jeuDeLaVie.cellules.CelluleEtatVivant;
+import jeuDeLaVie.commandes.Commande;
+import jeuDeLaVie.observateurs.Observable;
+import jeuDeLaVie.observateurs.Observateur;
+import jeuDeLaVie.visiteurs.Visiteur;
+import jeuDeLaVie.visiteurs.VisiteurClassique;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;

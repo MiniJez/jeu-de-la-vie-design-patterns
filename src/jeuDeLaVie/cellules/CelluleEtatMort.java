@@ -1,3 +1,7 @@
+package jeuDeLaVie.cellules;
+
+import jeuDeLaVie.visiteurs.Visiteur;
+
 public class CelluleEtatMort implements CelluleEtat {
     private static CelluleEtatMort instanceUnique = null;
 
