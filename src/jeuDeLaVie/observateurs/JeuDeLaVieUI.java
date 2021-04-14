@@ -9,11 +9,9 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
     private JeuDeLaVie jeu;
     private boolean enCours;
     private Thread thread;
-    private int vitesse;
 
     public JeuDeLaVieUI(JeuDeLaVie jeu) {
         this.jeu = jeu;
-        this.vitesse = 5;
     }
 
     public void actualise() {
@@ -43,10 +41,17 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
 
     @Override
     public void run() {
-        while( enCours ) {
+        while(enCours){
             jeu.calculerGenerationSuivante();
+
             try {
-                Thread.sleep(this.vitesse*100);
+                int tmp = jeu.getVitesse();
+
+                if(tmp == 5) tmp *= 100;
+                else if(tmp > 5) tmp = 1000 - (tmp*100);
+                else tmp = 500 + (tmp*100);
+
+                Thread.sleep(tmp);
             }catch(InterruptedException ex){
                 System.out.println("Erreur : "+ex);
             }

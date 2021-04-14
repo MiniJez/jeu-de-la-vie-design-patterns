@@ -15,6 +15,8 @@ import jeuDeLaVie.visiteurs.VisiteurHighLife;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
@@ -28,9 +30,10 @@ public class JeuDeLaVie implements Observable {
     private Cellule[][] grille;
     private int xMax;
     private int yMax;
+
     private int numGeneration;
     private int nbCellulesVivantes;
-    private boolean enPause;
+    private int vitesse;
 
     private List<Observateur> observateurs;
     private List<Commande> commandes;
@@ -41,7 +44,7 @@ public class JeuDeLaVie implements Observable {
         this.observateurs = new ArrayList<>();
         this.commandes = new ArrayList<>();
         this.numGeneration = 0;
-        this.enPause = true;
+        this.vitesse = 5;
     }
 
     public static void main(String[] args) {
@@ -85,7 +88,6 @@ public class JeuDeLaVie implements Observable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Lancement cliqué");
-                jeu.enPause = false;
                 jdv.lancer();
             }
         });
@@ -94,7 +96,6 @@ public class JeuDeLaVie implements Observable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Pause cliqué");
-                jeu.enPause = true;
                 jdv.arreter();
             }
         });
@@ -103,7 +104,6 @@ public class JeuDeLaVie implements Observable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Suivant cliqué");
-                jeu.enPause = true;
                 jeu.calculerGenerationSuivante();
             }
         });
@@ -113,31 +113,33 @@ public class JeuDeLaVie implements Observable {
         panneau.add(btnSuivant);
 
         JPanel slider = new JPanel();
+        JSlider s = new JSlider(JSlider.HORIZONTAL,2,8,5);
+        s.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                jeu.vitesse = s.getValue();
+            }
+        });
+
         slider.setLayout(new FlowLayout(FlowLayout.TRAILING, 15, 5));
         slider.add(new JLabel("Vitesse"));
-        slider.add(new JSlider(JSlider.HORIZONTAL,1,10,5));
+        slider.add(s);
         panneau.add(slider);
+
+        panneau.add(new JLabel("Choix des règles"));
+
+        JComboBox<String> choixRegles = new JComboBox<>();
+        choixRegles.addItem("Classique");
+        choixRegles.addItem("HighLife");
+        choixRegles.addItem("Day & Night");
+        choixRegles.setSelectedIndex(0);
+
+        panneau.add(choixRegles);
 
         boxPrincipale.add(panneau);
 
         fenetre.add(boxPrincipale);
         fenetre.pack();
-
-    }
-
-    private static class ThreadLancement extends Thread{
-        private JeuDeLaVie jeu;
-
-        public ThreadLancement(JeuDeLaVie jeu){
-            this.jeu = jeu;
-        }
-
-        @Override
-        public void run(){
-            while(!jeu.enPause){
-                jeu.calculerGenerationSuivante();
-            }
-        }
     }
 
     public void initialiseGrille() {
@@ -199,14 +201,9 @@ public class JeuDeLaVie implements Observable {
 
     public void calculerGenerationSuivante(){
         distribueVisiteur();
-//        try{
-//            Thread.sleep(400);
-            executeCommandes();
-            notifieObservateurs();
-            this.numGeneration++;
-//        } catch (InterruptedException ie) {
-//            System.out.println("Erreur : " + ie);
-//        }
+        executeCommandes();
+        notifieObservateurs();
+        this.numGeneration++;
     }
 
     public int calculerNbCellulesVivantes(){
@@ -224,13 +221,13 @@ public class JeuDeLaVie implements Observable {
 
     public void setYMax(int yMax) { this.yMax = yMax; }
 
-    public void setEnPause(boolean enPause) { this.enPause = enPause; }
-
     public void setVisiteur(Visiteur visiteur) { this.visiteur = visiteur; }
 
     public int getXMax() { return xMax; }
 
     public int getYMax() { return yMax; }
+
+    public int getVitesse() { return vitesse; }
 
     public int getNumGeneration() { return numGeneration; }
 }
