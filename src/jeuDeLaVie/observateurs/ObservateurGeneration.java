@@ -11,7 +11,6 @@ public class ObservateurGeneration implements Observateur {
 
     @Override
     public void actualise() {
-        System.out.println("Generation "+jeu.getNumGeneration());
-//        +" : "++" cellules vivantes"
+        System.out.println("Generation "+jeu.getNumGeneration()+" : "+jeu.calculerNbCellulesVivantes()+" cellules vivantes");
     }
 }

@@ -10,6 +10,7 @@ import jeuDeLaVie.observateurs.Observateur;
 import jeuDeLaVie.observateurs.ObservateurGeneration;
 import jeuDeLaVie.visiteurs.Visiteur;
 import jeuDeLaVie.visiteurs.VisiteurClassique;
+import jeuDeLaVie.visiteurs.VisiteurHighLife;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,6 +23,7 @@ public class JeuDeLaVie implements Observable {
     private int xMax;
     private int yMax;
     private int numGeneration;
+    private int nbCellulesVivantes;
 
     private List<Observateur> observateurs;
     private List<Commande> commandes;
@@ -37,21 +39,25 @@ public class JeuDeLaVie implements Observable {
     public static void main(String[] args) {
         JFrame fenetre = new JFrame("Le super jeu de la vie");
 
-        fenetre.setSize(new Dimension(800, 800));// regler la taille
+        fenetre.setSize(new Dimension(620, 750));// regler la taille
+        fenetre.setLayout(new BorderLayout(10, 10));
         fenetre.setLocationRelativeTo(null); // centrer la fenetre
         fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //gestion de la fermeture de la fenetre
         fenetre.setVisible(true); // afficher
 
         JeuDeLaVie jeu = new JeuDeLaVie();
-        jeu.setXMax(200);
-        jeu.setYMax(250);
+        jeu.setXMax(150);
+        jeu.setYMax(150);
         jeu.initialiseGrille();
-        jeu.setVisiteur(new VisiteurClassique(jeu));
+
+//        jeu.setVisiteur(new VisiteurClassique(jeu));
+        jeu.setVisiteur(new VisiteurHighLife(jeu));
 
         JeuDeLaVieUI jdv = new JeuDeLaVieUI(jeu);
         jeu.attacheObservateur(jdv);
         
-        fenetre.add(jdv);
+        fenetre.add(jdv, BorderLayout.CENTER);
+
 
         ObservateurGeneration og = new ObservateurGeneration(jeu);
         jeu.attacheObservateur(og);
@@ -63,16 +69,22 @@ public class JeuDeLaVie implements Observable {
 
     public void initialiseGrille() {
         this.grille = new Cellule[xMax][yMax];
+        this.nbCellulesVivantes = 0;
 
         for(int x = 0; x < xMax-1; x++){
             for(int y = 0; y < yMax-1; y++){
                 Random random = new Random();
                 int rand = random.nextInt() % 2;
 
-                if(rand == 0){ grille[x][y] = new Cellule(x, y, CelluleEtatMort.getInstance()); }
-                else{ grille[x][y] = new Cellule(x, y, CelluleEtatVivant.getInstance()); }
+                if(rand == 0){
+                    grille[x][y] = new Cellule(x, y, CelluleEtatMort.getInstance());
+                }
+                else{
+                    grille[x][y] = new Cellule(x, y, CelluleEtatVivant.getInstance());
+                }
             }
         }
+        calculerNbCellulesVivantes();
         System.out.println("Initialisation OK");
     }
 
@@ -140,12 +152,29 @@ public class JeuDeLaVie implements Observable {
 
     public void calculerGenerationSuivante(){
         distribueVisiteur();
-        executeCommandes();
-        notifieObservateurs();
-        System.out.println("---------- Generation "+numGeneration++);
+        try{
+            Thread.sleep(400);
+            executeCommandes();
+            notifieObservateurs();
+            this.numGeneration++;
+        } catch (InterruptedException ie) {
+            System.out.println("Erreur : " + ie);
+        }
     }
 
     public int getNumGeneration() {
         return numGeneration;
     }
+
+    public int calculerNbCellulesVivantes(){
+        int cpt = 0;
+        for(int x = 0; x < xMax-1; x++) {
+            for (int y = 0; y < yMax - 1; y++) {
+                if(getGrilleXY(x,y).estVivante()) cpt++;
+            }
+        }
+        this.nbCellulesVivantes = cpt;
+        return this.nbCellulesVivantes;
+    }
+
 }
