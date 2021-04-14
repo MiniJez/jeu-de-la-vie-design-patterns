@@ -3,7 +3,7 @@ package jeuDeLaVie.visiteurs;
 import jeuDeLaVie.cellules.Cellule;
 import jeuDeLaVie.commandes.CommandeMeurt;
 import jeuDeLaVie.commandes.CommandeVit;
-import jeuDeLaVie.jeu.JeuDeLaVie;
+import jeuDeLaVie.JeuDeLaVie;
 
 public class VisiteurClassique extends Visiteur {
 
@@ -18,11 +18,6 @@ public class VisiteurClassique extends Visiteur {
         if(nbVoisins < 2 || nbVoisins > 3){
             this.jeu.ajouteCommande(new CommandeMeurt(cellule));
         }
-//        else{
-//            this.jeu.ajouteCommande(new jeuDeLaVie.commandes.CommandeVit(cellule));
-//        }
-
-
     }
 
     @Override
@@ -30,8 +25,5 @@ public class VisiteurClassique extends Visiteur {
         if(cellule.nombreVoisinesVivantes(this.jeu) == 3){
             this.jeu.ajouteCommande(new CommandeVit(cellule));
         }
-//        else{
-//            this.jeu.ajouteCommande(new jeuDeLaVie.commandes.CommandeMeurt(cellule));
-//        }
     }
 }

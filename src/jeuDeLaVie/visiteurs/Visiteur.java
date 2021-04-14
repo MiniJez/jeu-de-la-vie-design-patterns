@@ -1,7 +1,7 @@
 package jeuDeLaVie.visiteurs;
 
 import jeuDeLaVie.cellules.Cellule;
-import jeuDeLaVie.jeu.JeuDeLaVie;
+import jeuDeLaVie.JeuDeLaVie;
 
 public abstract class Visiteur {
     protected JeuDeLaVie jeu;
