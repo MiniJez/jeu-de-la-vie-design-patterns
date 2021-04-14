@@ -60,9 +60,11 @@ public class JeuDeLaVie implements Observable {
         jeu.setYMax(150);
         jeu.initialiseGrille();
 
-//        jeu.setVisiteur(new VisiteurClassique(jeu));
-//        jeu.setVisiteur(new VisiteurHighLife(jeu));
-        jeu.setVisiteur(new VisiteurDayAndNight(jeu));
+        Visiteur vClassic = new VisiteurClassique(jeu);
+        Visiteur vHighLife = new VisiteurHighLife(jeu);
+        Visiteur vDayNight = new VisiteurDayAndNight(jeu);
+
+        jeu.setVisiteur(vClassic);
 
         ObservateurGeneration og = new ObservateurGeneration(jeu);
         jeu.attacheObservateur(og);
@@ -133,6 +135,17 @@ public class JeuDeLaVie implements Observable {
         choixRegles.addItem("HighLife");
         choixRegles.addItem("Day & Night");
         choixRegles.setSelectedIndex(0);
+
+        choixRegles.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String choix = choixRegles.getSelectedItem().toString();
+                if(choix == "Classique"){ jeu.setVisiteur(vClassic); }
+                else if(choix == "HighLife"){ jeu.setVisiteur(vHighLife); }
+                else { jeu.setVisiteur(vDayNight); }
+                System.out.println("Regles : "+choix);
+            }
+        });
 
         panneau.add(choixRegles);
 
