@@ -86,8 +86,7 @@ public class JeuDeLaVie implements Observable {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Lancement cliqué");
                 jeu.enPause = false;
-                Thread lancement = new ThreadLancement(jeu);
-                lancement.run();
+                jdv.lancer();
             }
         });
 
@@ -96,7 +95,7 @@ public class JeuDeLaVie implements Observable {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Pause cliqué");
                 jeu.enPause = true;
-
+                jdv.arreter();
             }
         });
 
@@ -122,12 +121,8 @@ public class JeuDeLaVie implements Observable {
         boxPrincipale.add(panneau);
 
         fenetre.add(boxPrincipale);
+        fenetre.pack();
 
-        while(fenetre.isVisible()){
-            if(!jeu.enPause){
-                jeu.calculerGenerationSuivante();
-            }
-        }
     }
 
     private static class ThreadLancement extends Thread{
