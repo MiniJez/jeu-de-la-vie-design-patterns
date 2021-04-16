@@ -1,47 +1,71 @@
 package jeuDeLaVie.observateurs;
 
 import jeuDeLaVie.JeuDeLaVie;
+
 import jeuDeLaVie.visiteurs.Visiteur;
 import jeuDeLaVie.visiteurs.VisiteurClassique;
 import jeuDeLaVie.visiteurs.VisiteurDayAndNight;
 import jeuDeLaVie.visiteurs.VisiteurHighLife;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import java.util.Hashtable;
 
+/**
+ * Classe qui gere l'interface du jeu de la vie.
+ * DESIGN PATTERN : OBSERVATEUR
+ */
 public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
+    /** Jeu de la vie */
     private JeuDeLaVie jeu;
+    /** Booleen pour savoir si le jeu est lance ou en pause */
     private boolean enCours;
+    /** Thread pour l'affichage */
     private Thread thread;
+    /** Vitesse de le rafraichissement de l'affichage */
     private int vitesse;
+    /** Zone de texte ou est affiche le numero de la generation en cours ainsi que le nombre cellules vivantes */
     private JTextArea infos;
 
+    /**
+     * Constructeur de JeuDeLaVieUI
+     * @param jeu jeu de la vie
+     */
     public JeuDeLaVieUI(JeuDeLaVie jeu) {
         this.jeu = jeu;
-        this.vitesse = 5;
+        this.vitesse = 5; // par défaut => vitesse = 5
     }
 
-    public void actualise() {
-        repaint();
-    }
+    /**
+     * Methode qui permet de rafraichir l'affichage avec la nouvelle generation de cellules
+     */
+    public void actualise() { repaint(); }
 
-    public void arreter() {
-        this.enCours = false;
-    }
+    /**
+     * Methode qui permet de mettre en pause l'automate
+     */
+    public void arreter() {  this.enCours = false; }
 
+    /**
+     * Methode qui permet de lancer l'automate
+     */
     public void lancer() {
         this.enCours = true;
         thread = new Thread(this);
         thread.start();
     }
 
+    /**
+     * Methode qui permet de permet de dessiner les cellules vivantes
+     * @param g Graphics
+     */
     public void paint(Graphics g) {
         super.paint(g);
         int nb = 0;
@@ -49,7 +73,9 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
         for(int x = 0; x < jeu.getXMax(); x++){
             for(int y = 0; y < jeu.getYMax(); y++){
                 if( jeu.getGrilleXY(x, y) != null && jeu.getGrilleXY(x, y).estVivante() ){
+                    // Coloration d'une cellule sur deux en violet
                     if(nb%2==0)  { g.setColor(new Color(104, 9, 155 )); }
+                    // Coloration d'une cellule sur deux en vert
                     else { g.setColor(new Color(48, 149, 5 )); }
                     g.fillRect(x*4, y*4, 3, 3);
                     nb++;
@@ -58,6 +84,9 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
         }
     }
 
+    /**
+     * Methode qui permet de creer l'interface du jeu de la vie
+     */
     public void creerInterface(){
 /******************** Gestion de la fenêtre ********************/
         JFrame fenetre = new JFrame("Le super jeu de la vie");
@@ -242,6 +271,9 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
         fenetre.pack();
     }
 
+    /**
+     * Methode qui est lancer quand l'automate est en cours (Thread en cours)
+     */
     @Override
     public void run() {
         while(enCours){
@@ -262,6 +294,9 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
         }
     }
 
+    /**
+     * Methode qui met a jour l'affichage le numero de la generation et les cellulles vivantes
+     */
     public void updateAffichage(){
         this.infos.setText("Génération numéro "+jeu.getNumGeneration()+"\nCellules vivantes : "+jeu.calculerNbCellulesVivantes());
     }

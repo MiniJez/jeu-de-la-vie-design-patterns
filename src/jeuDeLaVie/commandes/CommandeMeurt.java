@@ -3,7 +3,8 @@ package jeuDeLaVie.commandes;
 import jeuDeLaVie.cellules.Cellule;
 
 /**
- * Classe
+ * Classe qui represente la commande qui ordonne a une cellule de mourir
+ *  * Elle herite de la classe abstraite Commande (DESIGN PATTERN : COMMANDE)
  */
 public class CommandeMeurt extends Commande{
 
@@ -19,7 +20,5 @@ public class CommandeMeurt extends Commande{
      * Methode qui demande a la cellule de mourir
      */
     @Override
-    public void executer() {
-        this.cellule.meurt();
-    }
+    public void executer() { this.cellule.meurt();  }
 }
