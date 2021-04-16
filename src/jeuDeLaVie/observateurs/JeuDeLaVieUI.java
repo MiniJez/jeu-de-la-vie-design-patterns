@@ -7,6 +7,7 @@ import jeuDeLaVie.visiteurs.VisiteurDayAndNight;
 import jeuDeLaVie.visiteurs.VisiteurHighLife;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -43,101 +44,120 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
 
     public void paint(Graphics g) {
         super.paint(g);
+        int nb = 0;
 
         for(int x = 0; x < jeu.getXMax(); x++){
             for(int y = 0; y < jeu.getYMax(); y++){
                 if( jeu.getGrilleXY(x, y) != null && jeu.getGrilleXY(x, y).estVivante() ){
+                    if(nb%2==0)  { g.setColor(new Color(104, 9, 155 )); }
+                    else { g.setColor(new Color(48, 149, 5 )); }
                     g.fillRect(x*4, y*4, 3, 3);
+                    nb++;
                 }
             }
         }
     }
 
     public void creerInterface(){
+/******************** Gestion de la fenêtre ********************/
         JFrame fenetre = new JFrame("Le super jeu de la vie");
-
+        fenetre.setResizable(false);
         fenetre.setSize(new Dimension(670, 720));// regler la taille
         fenetre.setLocationRelativeTo(null); // centrer la fenetre
         fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //gestion de la fermeture de la fenetre
         fenetre.setVisible(true); // afficher
 
+/******************** Gestion du container principal ********************/
         JPanel boxPrincipale = new JPanel();
         boxPrincipale.setBorder(new EmptyBorder(10,10,10,10));
         boxPrincipale.setLayout(new BoxLayout(boxPrincipale, BoxLayout.X_AXIS));
 
-        this.setPreferredSize(new Dimension(600,600));
+/******************** Gestion de la grille ********************/
+        this.setPreferredSize(new Dimension(jeu.getYMax()*4,jeu.getXMax()*4));
+        this.setLayout(new BorderLayout(5,5));
         boxPrincipale.add(this);
 
-        JPanel panneau = new JPanel();
-        panneau.setLayout(new BorderLayout(5,25));
-        panneau.setPreferredSize(new Dimension(400,600));
+/********************  Gestion de la partie droite de l'application ********************/
+        JPanel droite = new JPanel();
+        droite.setLayout(new BorderLayout(5,25));
+        droite.setMinimumSize(new Dimension(400,400));
+        droite.setPreferredSize(new Dimension(400,400));
 
         JPanel haut = new JPanel();
         haut.setLayout(new BorderLayout(5,25));
 
-
-        JPanel jp = new JPanel();
+/******************** Gestion de l'affichage du nombre de générations + nombre de cellules vivantes ********************/
+        JPanel nbGen = new JPanel();
         infos = new JTextArea(2,20);
         infos.setEditable(false);
-        jp.setPreferredSize(new Dimension(300,50));
+        nbGen.setPreferredSize(new Dimension(300,50));
         infos.setText("Génération numéro "+jeu.getNumGeneration()+"\nCellules vivantes : "+jeu.calculerNbCellulesVivantes());
-        jp.add(infos);
+        nbGen.add(infos);
 
-        haut.add(jp);
+        haut.add(nbGen);
 
+/******************** Gestion du positionnement des boutons de lancement - pause - mode 'pas à pas' ********************/
         JPanel boutons = new JPanel();
         boutons.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 5));
-
         JButton btnLancer = new JButton("Lancer", new ImageIcon("./assets/play.png"));
         JButton btnPause = new JButton("Pause", new ImageIcon("./assets/pause.png"));
         JButton btnSuivant = new JButton("Suivant", new ImageIcon("./assets/suivant.png"));
 
+/******************** Gestion du bouton de lancement ********************/
         btnLancer.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) { lancer();  }
+            public void actionPerformed(ActionEvent e) {
+                if(!enCours) lancer();
+            }
         });
 
+/******************** Gestion du bouton de pause ********************/
         btnPause.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) { arreter(); }
         });
 
+/******************** Gestion du bouton pour avancer "pas à pas" ********************/
         btnSuivant.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) { jeu.calculerGenerationSuivante(); }
+            public void actionPerformed(ActionEvent e) {
+                if(!enCours){
+                    updateAffichage();
+                    jeu.calculerGenerationSuivante();
+                }
+            }
         });
-
+/******************** Ajout des boutons ********************/
         boutons.add(btnLancer);
-        boutons.add(btnPause );
+        boutons.add(btnPause);
         boutons.add(btnSuivant);
-
         haut.add(boutons, BorderLayout.SOUTH);
-        panneau.add(haut, BorderLayout.NORTH);
+        droite.add(haut, BorderLayout.NORTH);
 
         JPanel options = new JPanel();
+        options.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 35));
 
+/******************** Gestion du slider pour la vitesse ********************/
         JSlider s = new JSlider(JSlider.HORIZONTAL,2,8,5);
-
         Hashtable labels = new Hashtable();
         labels.put( 2, new JLabel("Lent") );
         labels.put( 8, new JLabel("Rapide") );
-
         s.setLabelTable(labels);
         s.setMinorTickSpacing(1);
         s.setMajorTickSpacing(8);
         s.setPaintTicks(true);
         s.setPaintLabels(true);
 
+/******************** Gestion de la vitesse ********************/
         s.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) { vitesse = s.getValue(); }
         });
 
-        options.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 35));
         options.add(new JLabel("Vitesse"));
         options.add(s);
 
-
+/******************** Gestion du choix des règles ********************/
         JPanel choixRegles = new JPanel();
         choixRegles.setLayout(new FlowLayout(FlowLayout.TRAILING, 15, 5));
         choixRegles.add(new JLabel("Choix des règles"));
@@ -148,14 +168,11 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
         comboBox.addItem("Day & Night");
         comboBox.setSelectedIndex(0);
 
-
-        choixRegles.add(comboBox);
-
         Visiteur vClassic = new VisiteurClassique(jeu);
         Visiteur vHighLife = new VisiteurHighLife(jeu);
         Visiteur vDayNight = new VisiteurDayAndNight(jeu);
 
-        jeu.setVisiteur(vClassic);
+        jeu.setVisiteur(vClassic); // par défaut : mode classique
 
         comboBox.addActionListener(new ActionListener() {
             @Override
@@ -167,12 +184,15 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
             }
         });
 
+        choixRegles.add(comboBox);
         options.add(choixRegles);
 
+/******************** Gestion du reset ********************/
         JButton reset = new JButton("Réinitialiser", new ImageIcon("./assets/reset.png"));
         reset.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                updateAffichage();
                 System.out.println("Reinitialiser");
                 jeu.initialiseGrille();
             }
@@ -180,9 +200,43 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
 
         options.add(reset);
 
-        panneau.add(options, BorderLayout.CENTER);
+/******************** Gestion du choix de la taille de la grille ********************/
+        JPanel choixTaille = new JPanel();
+        choixTaille.setLayout(new FlowLayout(FlowLayout.TRAILING, 15, 5));
+        choixTaille.add(new JLabel("Choix de la taille"));
 
-        boxPrincipale.add(panneau);
+        JComboBox<String> comboBox2 = new JComboBox<>();
+        comboBox2.addItem("80x80");
+        comboBox2.addItem("100x100");
+        comboBox2.addItem("125x125");
+        comboBox2.addItem("150x150");
+        comboBox2.setSelectedIndex(1);
+
+        comboBox2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String choix = comboBox2.getSelectedItem().toString();
+                int valeur;
+
+                if(choix == "80x80") { valeur = 80; }
+                else if(choix == "125x125") { valeur = 125; }
+                else if(choix == "150x150"){  valeur = 150; }
+                else{ valeur = 100; }
+
+                jeu.setXMax(valeur);
+                jeu.setYMax(valeur);
+                jeu.initialiseGrille();
+                updateAffichage();
+                lancer();
+            }
+        });
+
+        choixTaille.add(comboBox2);
+        options.add(choixTaille);
+
+
+        droite.add(options, BorderLayout.CENTER);
+        boxPrincipale.add(droite);
 
         fenetre.add(boxPrincipale);
         fenetre.pack();
@@ -196,7 +250,7 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
 
             try {
                 int tmp = vitesse;
-
+/******************** Gestion de la vitesse (en fonction de de la position du curseur sur le slider) ********************/
                 if(tmp == 5) tmp *= 100;
                 else if(tmp > 5) tmp = 1000 - (tmp*100);
                 else tmp = 500 + (tmp*100);
