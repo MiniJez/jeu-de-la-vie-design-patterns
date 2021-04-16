@@ -1,10 +1,16 @@
 package jeuDeLaVie.visiteurs;
 
 import jeuDeLaVie.cellules.Cellule;
+
 import jeuDeLaVie.commandes.CommandeMeurt;
 import jeuDeLaVie.commandes.CommandeVit;
+
 import jeuDeLaVie.JeuDeLaVie;
 
+/**
+ * Classe qui implemente les regles classiques du jeu de la vie.
+ * Elle herite de la classe Visiteur.
+ */
 public class VisiteurClassique extends Visiteur {
 
     public VisiteurClassique(JeuDeLaVie jeu) {

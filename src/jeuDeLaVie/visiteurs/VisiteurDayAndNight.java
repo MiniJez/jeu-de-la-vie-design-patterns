@@ -1,10 +1,16 @@
 package jeuDeLaVie.visiteurs;
 
 import jeuDeLaVie.JeuDeLaVie;
+
 import jeuDeLaVie.cellules.Cellule;
+
 import jeuDeLaVie.commandes.CommandeMeurt;
 import jeuDeLaVie.commandes.CommandeVit;
 
+/**
+ * Classe qui implemente les regles 'Day & Night' du jeu de la vie.
+ * Elle herite de la classe Visiteur.
+ */
 public class VisiteurDayAndNight extends Visiteur{
     public VisiteurDayAndNight(JeuDeLaVie jeu) {
         super(jeu);
