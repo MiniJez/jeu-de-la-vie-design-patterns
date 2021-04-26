@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
- *
+ * Classe qui s'occupe de la partie de la logique du jeu.
  */
 public class JeuDeLaVie implements Observable {
     /** Grille de cellule du jeu */
@@ -55,9 +55,9 @@ public class JeuDeLaVie implements Observable {
      */
     public static void main(String[] args) {
         JeuDeLaVie jeu = new JeuDeLaVie();
-        // Taille de la grille par défaut : 150 x 150
-        jeu.setXMax(150);
-        jeu.setYMax(150);
+        // Taille de la grille par défaut : 170 x 170
+        jeu.setXMax(170);
+        jeu.setYMax(170);
         jeu.initialiseGrille();
 
         // Attachement de l'observateur

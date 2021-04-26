@@ -2,6 +2,7 @@ package jeuDeLaVie.observateurs;
 
 import jeuDeLaVie.JeuDeLaVie;
 
+import jeuDeLaVie.cellules.Cellule;
 import jeuDeLaVie.visiteurs.Visiteur;
 import jeuDeLaVie.visiteurs.VisiteurClassique;
 import jeuDeLaVie.visiteurs.VisiteurDayAndNight;
@@ -34,6 +35,17 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
     /** Zone de texte ou est affiche le numero de la generation en cours ainsi que le nombre cellules vivantes */
     private JTextArea infos;
 
+    private Color coulVivantes;
+    private Color coulMortes;
+
+    private static Color MARRON = new Color(103,68,0);
+    private static Color ORANGE = new Color(255,100,31);
+    private static Color VERT = new Color(30,95,20);
+    private static Color BLEU = new Color(0,43,155);
+    private static Color VIOLET = new Color(129,0,185);
+    private static Color GRIS = new Color(220,220,220);
+
+
     /**
      * Constructeur de JeuDeLaVieUI
      * @param jeu jeu de la vie
@@ -41,6 +53,8 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
     public JeuDeLaVieUI(JeuDeLaVie jeu) {
         this.jeu = jeu;
         this.vitesse = 5; // par défaut => vitesse = 5
+        this.coulVivantes = BLEU;
+        this.coulMortes = GRIS;
     }
 
     /**
@@ -68,18 +82,13 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
      */
     public void paint(Graphics g) {
         super.paint(g);
-        int nb = 0;
 
         for(int x = 0; x < jeu.getXMax(); x++){
             for(int y = 0; y < jeu.getYMax(); y++){
-                if( jeu.getGrilleXY(x, y) != null && jeu.getGrilleXY(x, y).estVivante() ){
-                    // Coloration d'une cellule sur deux en violet
-                    if(nb%2==0)  { g.setColor(new Color(104, 9, 155 )); }
-                    // Coloration d'une cellule sur deux en vert
-                    else { g.setColor(new Color(48, 149, 5 )); }
-                    g.fillRect(x*4, y*4, 3, 3);
-                    nb++;
-                }
+                Cellule c = jeu.getGrilleXY(x,y);
+                if( c != null && c.estVivante() ){ g.setColor(coulVivantes); }
+                else{ g.setColor(coulMortes); }
+                g.fillRect(x*4, y*4, 3, 3);
             }
         }
     }
@@ -105,6 +114,7 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
         this.setPreferredSize(new Dimension(jeu.getYMax()*4,jeu.getXMax()*4));
         this.setLayout(new BorderLayout(5,5));
         boxPrincipale.add(this);
+
 
 /********************  Gestion de la partie droite de l'application ********************/
         JPanel droite = new JPanel();
@@ -150,6 +160,7 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
         btnSuivant.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if(enCours){ arreter(); }
                 if(!enCours){
                     updateAffichage();
                     jeu.calculerGenerationSuivante();
@@ -233,14 +244,15 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
 /******************** Gestion du choix de la taille de la grille ********************/
         JPanel choixTaille = new JPanel();
         choixTaille.setLayout(new FlowLayout(FlowLayout.TRAILING, 15, 5));
-        choixTaille.add(new JLabel("Choix de la taille"));
+        choixTaille.add(new JLabel("Taille grille"));
 
         JComboBox<String> comboBox2 = new JComboBox<>();
         comboBox2.addItem("80x80");
         comboBox2.addItem("100x100");
         comboBox2.addItem("125x125");
         comboBox2.addItem("150x150");
-        comboBox2.setSelectedIndex(1);
+        comboBox2.addItem("170x170");
+        comboBox2.setSelectedIndex(4);
 
         comboBox2.addActionListener(new ActionListener() {
             @Override
@@ -249,14 +261,21 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
                 int valeur;
 
                 if(choix == "80x80") { valeur = 80; }
+                else if(choix == "100x100"){ valeur = 100; }
                 else if(choix == "125x125") { valeur = 125; }
-                else if(choix == "150x150"){  valeur = 150; }
-                else{ valeur = 100; }
+                else if(choix == "150x150"){ valeur = 150; }
+                else{ valeur = 170; }
 
                 jeu.setXMax(valeur);
                 jeu.setYMax(valeur);
+
+                setSize(new Dimension(valeur*4,valeur*4));
+                fenetre.pack();
                 jeu.initialiseGrille();
                 updateAffichage();
+                s.setValue(5);
+                vitesse = 5;
+
                 lancer();
             }
         });
@@ -264,6 +283,63 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
         choixTaille.add(comboBox2);
         options.add(choixTaille);
 
+/******************** Gestion du choix des couleurs ********************/
+        JPanel choixCouleurs = new JPanel();
+//        choixCouleurs.setLayout(new BoxLayout(choixCouleurs,BoxLayout.Y_AXIS));
+
+        JPanel choixCoulV = new JPanel();
+        choixCoulV.setLayout(new FlowLayout(FlowLayout.TRAILING, 5, 5));
+        choixCoulV.add(new JLabel("Cellules vivantes"));
+
+        JComboBox<String> coulV = new JComboBox<>();
+        coulV.addItem("Bleu");
+        coulV.addItem("Noir");
+        coulV.addItem("Marron");
+        coulV.addItem("Orange");
+        coulV.addItem("Vert");
+        coulV.addItem("Violet");
+        coulV.addItem("Rouge");
+        coulV.setSelectedIndex(0);
+
+        coulV.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String choix = coulV.getSelectedItem().toString();
+
+                if(choix == "Noir"){ coulVivantes = Color.BLACK; }
+                else if(choix == "Marron"){ coulVivantes = MARRON; }
+                else if(choix == "Orange"){ coulVivantes = ORANGE; }
+                else if(choix == "Vert"){ coulVivantes = VERT; }
+                else if(choix == "Violet"){ coulVivantes = VIOLET; }
+                else if(choix == "Rouge"){ coulVivantes = Color.RED; }
+                else{ coulVivantes = BLEU; }
+            }
+        });
+        choixCoulV.add(coulV);
+
+        JPanel choixCoulM = new JPanel();
+        choixCoulM.setLayout(new FlowLayout(FlowLayout.TRAILING, 5, 5));
+        choixCoulM.add(new JLabel("Cellules mortes"));
+
+        JComboBox<String> coulM = new JComboBox<>();
+        coulM.addItem("Gris");
+        coulM.addItem("Blanc");
+        coulM.setSelectedIndex(0);
+
+        coulM.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String choix = coulM.getSelectedItem().toString();
+
+                if(choix == "Gris"){ coulMortes = GRIS; }
+                else{ coulMortes = Color.WHITE; }
+            }
+        });
+       choixCoulM.add(coulM);
+
+        choixCouleurs.add(choixCoulV);
+        choixCouleurs.add(choixCoulM);
+        options.add(choixCouleurs);
 
         droite.add(options, BorderLayout.CENTER);
         boxPrincipale.add(droite);
