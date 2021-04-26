@@ -197,6 +197,7 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
         comboBox.addItem("Day & Night");
         comboBox.setSelectedIndex(0);
 
+        // Création des observateurs pour les différentes règles du jeu
         Visiteur vClassic = new VisiteurClassique(jeu);
         Visiteur vHighLife = new VisiteurHighLife(jeu);
         Visiteur vDayNight = new VisiteurDayAndNight(jeu);

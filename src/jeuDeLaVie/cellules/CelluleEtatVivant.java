@@ -1,4 +1,3 @@
-
 package jeuDeLaVie.cellules;
 
 import jeuDeLaVie.visiteurs.Visiteur;

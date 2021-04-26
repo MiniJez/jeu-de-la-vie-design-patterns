@@ -12,10 +12,19 @@ import jeuDeLaVie.commandes.CommandeVit;
  * Elle herite de la classe Visiteur.
  */
 public class VisiteurDayAndNight extends Visiteur{
+
+    /**
+     * Constructeur du VisiteurDayAndNight
+     * @param jeu jeu de la vie
+     */
     public VisiteurDayAndNight(JeuDeLaVie jeu) {
         super(jeu);
     }
 
+    /**
+     * Methode qui permet visiter les cellules vivantes
+     * @param cellule cellule a visiter
+     */
     @Override
     public void visiteCelluleVivante(Cellule cellule) {
         int nbVoisins = cellule.nombreVoisinesVivantes(this.jeu);
@@ -25,6 +34,10 @@ public class VisiteurDayAndNight extends Visiteur{
         }
     }
 
+    /**
+     * Methode qui permet visiter les cellules mortes
+     * @param cellule cellule a visiter
+     */
     @Override
     public void visiteCelluleMorte(Cellule cellule) {
         int nbVoisins = cellule.nombreVoisinesVivantes(this.jeu);

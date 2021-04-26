@@ -13,10 +13,19 @@ import jeuDeLaVie.JeuDeLaVie;
  */
 public class VisiteurClassique extends Visiteur {
 
+    /**
+     * Constructeur du VisiteurClassique
+     * @param jeu jeu de la vie
+     */
     public VisiteurClassique(JeuDeLaVie jeu) {
         super(jeu);
     }
 
+
+    /**
+     * Methode qui permet visiter les cellules vivantes
+     * @param cellule cellule a visiter
+     */
     @Override
     public void visiteCelluleVivante(Cellule cellule) {
         int nbVoisins = cellule.nombreVoisinesVivantes(this.jeu);
@@ -26,6 +35,10 @@ public class VisiteurClassique extends Visiteur {
         }
     }
 
+    /**
+     * Methode qui permet visiter les cellules mortes
+     * @param cellule cellule a visiter
+     */
     @Override
     public void visiteCelluleMorte(Cellule cellule) {
         if(cellule.nombreVoisinesVivantes(this.jeu) == 3){

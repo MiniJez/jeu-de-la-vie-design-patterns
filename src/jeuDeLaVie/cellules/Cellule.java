@@ -1,6 +1,7 @@
 package jeuDeLaVie.cellules;
 
 import jeuDeLaVie.JeuDeLaVie;
+
 import jeuDeLaVie.visiteurs.Visiteur;
 
 /**
