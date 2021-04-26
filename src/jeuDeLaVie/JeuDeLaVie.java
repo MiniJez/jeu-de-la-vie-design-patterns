@@ -34,9 +34,9 @@ public class JeuDeLaVie implements Observable {
     private int nbCellulesVivantes;
 
     /** Liste des observateurs */
-    private List<Observateur> observateurs;
+    private final List<Observateur> observateurs;
     /** Liste des des actions a effectuer (= modification des cellules) */
-    private List<Commande> commandes;
+    private final List<Commande> commandes;
 
     /** Visiteur : regles du jeu a prendre en compte */
     private Visiteur visiteur;

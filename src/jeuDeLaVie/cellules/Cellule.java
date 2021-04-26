@@ -11,9 +11,9 @@ public class Cellule {
     /** Etat de la cellule */
     private CelluleEtat etat;
     /** Coordonnee en  x */
-    private int x;
+    private final int x;
     /** Coordonnee en  y */
-    private int y;
+    private final int y;
 
     /**
      * Constructeur d'une Cellule

@@ -8,7 +8,7 @@ import jeuDeLaVie.visiteurs.Visiteur;
  */
 public class CelluleEtatMort implements CelluleEtat {
     /** Instance unique de CelluleEtatMort */
-    private static CelluleEtatMort instanceUnique = null;
+    private static final CelluleEtatMort instanceUnique = null;
 
     /**
      * Constructeur
