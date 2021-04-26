@@ -173,9 +173,11 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
 
 /*----------------------------- Gestion du slider pour la vitesse -----------------------------*/
         JSlider s = new JSlider(JSlider.HORIZONTAL,2,8,5);
+        // hashtable pour les labels
         Hashtable<Integer, JLabel> labels = new Hashtable<>();
         labels.put( 2, new JLabel("Lent") );
         labels.put( 8, new JLabel("Rapide") );
+        // gestion des espacements (petits traits)
         s.setLabelTable(labels);
         s.setMinorTickSpacing(1);
         s.setMajorTickSpacing(8);
@@ -183,8 +185,7 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
         s.setPaintLabels(true);
 
 /*----------------------------- Gestion de la vitesse -----------------------------*/
-        s.addChangeListener(change -> vitesse = s.getValue());
-
+        s.addChangeListener(changement -> vitesse = s.getValue());
         options.add(new JLabel("Vitesse"));
         options.add(s);
 
@@ -206,11 +207,14 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
 
         jeu.setVisiteur(vClassic); // par défaut : mode classique
 
-        comboBox.addActionListener(change -> {
+        comboBox.addActionListener(changement -> {
             String choix = comboBox.getSelectedItem().toString();
-            if(choix.equals("Classique")){ jeu.setVisiteur(vClassic); }
-            else if(choix.equals("HighLife")){ jeu.setVisiteur(vHighLife); }
-            else { jeu.setVisiteur(vDayNight); }
+
+            switch (choix) {
+                case "Classique" -> jeu.setVisiteur(vClassic);
+                case "HighLife" -> jeu.setVisiteur(vHighLife);
+                default -> jeu.setVisiteur(vDayNight);
+            }
         });
 
         choixRegles.add(comboBox);
@@ -242,6 +246,7 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
         // Gestion du changement de taille de la grille
         comboBox2.addActionListener(evenement -> {
             String choix = comboBox2.getSelectedItem().toString();
+
             int valeur = switch (choix) {
                 case "80x80" -> 80;
                 case "100x100" -> 100;
@@ -252,12 +257,11 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
 
             jeu.setXMax(valeur);
             jeu.setYMax(valeur);
-
             jeu.initialiseGrille();
+
             s.setValue(5);
             vitesse = 5;
             updateAffichage();
-
             lancer();
         });
 
@@ -335,7 +339,7 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
 
             try {
                 int tmp = vitesse;
-/*----------------------------- Gestion de la vitesse (en fonction de de la position du curseur sur le slider) -----------------------------s*/
+                // Gestion de la vitesse (en fonction de de la position du curseur sur le slider)
                 if(tmp == 5) tmp *= 100;
                 else if(tmp > 5) tmp = 1000 - (tmp*100);
                 else tmp = 500 + (tmp*100);
