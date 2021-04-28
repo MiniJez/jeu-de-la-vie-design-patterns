@@ -72,7 +72,7 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
     public void arreter() {  this.enCours = false; }
 
     /**
-     * Methode qui permet de lancer l'automate
+     * Methode qui permet de lancer l'automate. Lancement d'un thread.
      */
     public void lancer() {
         this.enCours = true;
@@ -86,13 +86,26 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
      */
     public void paint(Graphics g) {
         super.paint(g);
+        int xmax = jeu.getXMax();
+        int ymax = jeu.getYMax();
 
-        for(int x = 0; x < jeu.getXMax(); x++){
-            for(int y = 0; y < jeu.getYMax(); y++){
+        // Gestion de la taille des cellules en fonction de la taille de la grille
+        int val = switch (xmax){
+            case 80 -> 8;
+            case 100 -> 6;
+            case 125 -> 5;
+            default -> 4;
+        };
+
+        for(int x = 0; x < xmax; x++){
+            for(int y = 0; y < ymax; y++){
                 Cellule c = jeu.getGrilleXY(x,y);
+
+                // Gestion des couleurs des cellules
                 if( c != null && c.estVivante() ){ g.setColor(coulVivantes); }
                 else{ g.setColor(coulMortes); }
-                g.fillRect(x*4, y*4, 3, 3);
+                // Remplir le rectangle
+                g.fillRect(x*val, y*val, val-1, val-1);
             }
         }
     }
@@ -103,7 +116,7 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
     public void creerInterface(){
 /*----------------------------- Gestion de la fenêtre -----------------------------*/
         JFrame fenetre = new JFrame("Le super jeu de la vie");
-        fenetre.setResizable(false);
+        fenetre.setResizable(false); // fenetre non redimensionable
         fenetre.setSize(new Dimension(670, 720));// regler la taille
         fenetre.setLocationRelativeTo(null); // centrer la fenetre
         fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //gestion de la fermeture de la fenetre
@@ -115,14 +128,13 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
         boxPrincipale.setLayout(new BoxLayout(boxPrincipale, BoxLayout.X_AXIS));
 
 /*----------------------------- Gestion de la grille -----------------------------*/
-        this.setPreferredSize(new Dimension(jeu.getYMax()*4,jeu.getXMax()*4));
+        this.setPreferredSize(new Dimension(jeu.getYMax()*8,jeu.getXMax()*8));
         this.setLayout(new BorderLayout(5,5));
         boxPrincipale.add(this);
 
 /*-----------------------------  Gestion de la partie droite de l'application -----------------------------*/
         JPanel droite = new JPanel();
         droite.setLayout(new BorderLayout(5,25));
-        droite.setMinimumSize(new Dimension(400,400));
         droite.setPreferredSize(new Dimension(400,400));
 
         JPanel haut = new JPanel();
@@ -154,8 +166,8 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
 /*----------------------------- Gestion du bouton pour avancer "pas à pas" -----------------------------*/
         btnSuivant.addActionListener(evenement-> {
             if(enCours){ arreter(); }
-            if(!enCours){
-                updateAffichage();
+            else{
+                updateAffichage(); // mettre a jour l'afficahe du numero de la generation + nombre de cellules vivantes
                 jeu.calculerGenerationSuivante();
             }
         });
@@ -211,9 +223,9 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
             String choix = comboBox.getSelectedItem().toString();
 
             switch (choix) {
-                case "Classique" -> jeu.setVisiteur(vClassic);
                 case "HighLife" -> jeu.setVisiteur(vHighLife);
-                default -> jeu.setVisiteur(vDayNight);
+                case "Day & Night" -> jeu.setVisiteur(vDayNight);
+                default -> jeu.setVisiteur(vClassic);
             }
         });
 
@@ -241,18 +253,18 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
         comboBox2.addItem("125x125");
         comboBox2.addItem("150x150");
         comboBox2.addItem("170x170");
-        comboBox2.setSelectedIndex(4);
+        comboBox2.setSelectedIndex(0);
 
         // Gestion du changement de taille de la grille
         comboBox2.addActionListener(evenement -> {
             String choix = comboBox2.getSelectedItem().toString();
 
             int valeur = switch (choix) {
-                case "80x80" -> 80;
                 case "100x100" -> 100;
                 case "125x125" -> 125;
                 case "150x150" -> 150;
-                default -> 170;
+                case "170x170" -> 170;
+                default -> 80;
             };
 
             jeu.setXMax(valeur);
@@ -261,7 +273,7 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
 
             s.setValue(5);
             vitesse = 5;
-            updateAffichage();
+//            updateAffichage();
             lancer();
         });
 
@@ -333,6 +345,7 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
      */
     @Override
     public void run() {
+        int attente = 0;
         while(enCours){
             updateAffichage();
             jeu.calculerGenerationSuivante();
@@ -340,11 +353,11 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
             try {
                 int tmp = vitesse;
                 // Gestion de la vitesse (en fonction de de la position du curseur sur le slider)
-                if(tmp == 5) tmp *= 100;
-                else if(tmp > 5) tmp = 1000 - (tmp*100);
-                else tmp = 500 + (tmp*100);
+                if(tmp == 5)  attente = tmp*100;
+                else if(tmp > 5) attente = 1000 - (tmp*100);
+                else attente = 500 + (tmp*100);
 
-                Thread.sleep(tmp); // temps a attendre entre 2 générations
+                Thread.sleep(attente); // temps a attendre entre 2 générations
             }catch(InterruptedException ex){
                 System.out.println("Erreur : "+ex);
             }

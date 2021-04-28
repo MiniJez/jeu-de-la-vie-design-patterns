@@ -56,8 +56,8 @@ public class JeuDeLaVie implements Observable {
     public static void main(String[] args) {
         JeuDeLaVie jeu = new JeuDeLaVie();
         // Taille de la grille par défaut : 170 x 170
-        jeu.setXMax(170);
-        jeu.setYMax(170);
+        jeu.setXMax(80);
+        jeu.setYMax(80);
         jeu.initialiseGrille();
 
         // Attachement de l'observateur
