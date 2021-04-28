@@ -13,9 +13,9 @@ import jeuDeLaVie.observateurs.ObservateurGeneration;
 
 import jeuDeLaVie.visiteurs.Visiteur;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Classe qui s'occupe de la partie de la logique du jeu.
@@ -45,8 +45,8 @@ public class JeuDeLaVie implements Observable {
      * Constructeur du jeu de la vie
      */
     public JeuDeLaVie() {
-        this.observateurs = new ArrayList<>();
-        this.commandes = new ArrayList<>();
+        this.observateurs = new CopyOnWriteArrayList<>();
+        this.commandes = new CopyOnWriteArrayList<>();
     }
 
     /**
@@ -55,7 +55,7 @@ public class JeuDeLaVie implements Observable {
      */
     public static void main(String[] args) {
         JeuDeLaVie jeu = new JeuDeLaVie();
-        // Taille de la grille par défaut : 170 x 170
+        // Taille de la grille par défaut : 80 x 80
         jeu.setXMax(80);
         jeu.setYMax(80);
         jeu.initialiseGrille();
@@ -95,6 +95,72 @@ public class JeuDeLaVie implements Observable {
         System.out.println("Initialisation OK");
     }
 
+    /**
+     * Methode qui permet d'initialiser une grille avec un canon qui emet des vaisseaux a intervalle regulier.
+     * Creer une grille 80x80
+     */
+    public void initialiserCanon(){
+        setXMax(80);
+        setYMax(80);
+        this.grille = new Cellule[xMax][yMax];
+        this.numGeneration = 0; // generation initiale
+        this.nbCellulesVivantes = 0; // compteur des cellules vivantes
+
+        for(int x = 0; x < xMax-1; x++){
+            for(int y = 0; y < yMax-1; y++){
+                grille[x][y] = new Cellule(x, y, CelluleEtatMort.getInstance());
+            }
+        }
+        getGrilleXY(10,24).vit();
+        getGrilleXY(10,25).vit();
+        getGrilleXY(11,24).vit();
+        getGrilleXY(11,25).vit();
+
+        getGrilleXY(20,24).vit();
+        getGrilleXY(20,25).vit();
+        getGrilleXY(20,26).vit();
+
+        getGrilleXY(21,23).vit();
+        getGrilleXY(21,27).vit();
+
+        getGrilleXY(22,22).vit();
+        getGrilleXY(22,28).vit();
+
+        getGrilleXY(23,22).vit();
+        getGrilleXY(23,28).vit();
+
+        getGrilleXY(24,25).vit();
+
+        getGrilleXY(25,23).vit();
+        getGrilleXY(25,27).vit();
+
+        getGrilleXY(26,24).vit();
+        getGrilleXY(26,25).vit();
+        getGrilleXY(26,26).vit();
+
+        getGrilleXY(27,25).vit();
+
+        getGrilleXY(30,22).vit();
+        getGrilleXY(30,23).vit();
+        getGrilleXY(30,24).vit();
+
+        getGrilleXY(31,22).vit();
+        getGrilleXY(31,23).vit();
+        getGrilleXY(31,24).vit();
+
+        getGrilleXY(32,21).vit();
+        getGrilleXY(32,25).vit();
+
+        getGrilleXY(34,20).vit();
+        getGrilleXY(34,21).vit();
+        getGrilleXY(34,25).vit();
+        getGrilleXY(34,26).vit();
+
+        getGrilleXY(44,22).vit();
+        getGrilleXY(44,23).vit();
+        getGrilleXY(45,22).vit();
+        getGrilleXY(45,23).vit();
+    }
     /**
      * Methode qui permet recuperer une cellule en fonction de ses coordonnees
      * @param x coordonnee x

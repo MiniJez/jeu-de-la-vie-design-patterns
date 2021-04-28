@@ -3,6 +3,7 @@ package jeuDeLaVie.observateurs;
 import jeuDeLaVie.JeuDeLaVie;
 
 import jeuDeLaVie.cellules.Cellule;
+
 import jeuDeLaVie.visiteurs.Visiteur;
 import jeuDeLaVie.visiteurs.VisiteurClassique;
 import jeuDeLaVie.visiteurs.VisiteurDayAndNight;
@@ -136,6 +137,7 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
         JPanel droite = new JPanel();
         droite.setLayout(new BorderLayout(5,25));
         droite.setPreferredSize(new Dimension(400,400));
+        droite.setMinimumSize(new Dimension(400,400));
 
         JPanel haut = new JPanel();
         haut.setLayout(new BorderLayout(5,25));
@@ -206,11 +208,12 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
         choixRegles.setLayout(new FlowLayout(FlowLayout.TRAILING, 15, 5));
         choixRegles.add(new JLabel("Choix des règles"));
 
-        JComboBox<String> comboBox = new JComboBox<>();
-        comboBox.addItem("Classique");
-        comboBox.addItem("HighLife");
-        comboBox.addItem("Day & Night");
-        comboBox.setSelectedIndex(0);
+        JComboBox<String> regles = new JComboBox<>();
+        regles.addItem("Classique");
+        regles.addItem("HighLife");
+        regles.addItem("Day & Night");
+        regles.addItem("Canon à planeur");
+        regles.setSelectedIndex(0);
 
         // Création des visiteurs pour les différentes règles du jeu
         Visiteur vClassic = new VisiteurClassique(jeu);
@@ -219,17 +222,18 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
 
         jeu.setVisiteur(vClassic); // par défaut : mode classique
 
-        comboBox.addActionListener(changement -> {
-            String choix = comboBox.getSelectedItem().toString();
+        regles.addActionListener(changement -> {
+            String choix = regles.getSelectedItem().toString();
 
             switch (choix) {
                 case "HighLife" -> jeu.setVisiteur(vHighLife);
                 case "Day & Night" -> jeu.setVisiteur(vDayNight);
                 default -> jeu.setVisiteur(vClassic);
             }
+            if(choix.equals("Canon à planeur")) jeu.initialiserCanon();
         });
 
-        choixRegles.add(comboBox);
+        choixRegles.add(regles);
         options.add(choixRegles);
 
 /*----------------------------- Gestion du reset -----------------------------*/
@@ -237,7 +241,10 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
         reset.addActionListener(evenement -> {
             updateAffichage();
             System.out.println("Reinitialiser");
-            jeu.initialiseGrille();
+            if(regles.getSelectedItem().toString().equals("Canon à planeur")) jeu.initialiserCanon();
+            else jeu.initialiseGrille();
+            s.setValue(5);
+            vitesse = 5;
         });
 
         options.add(reset);
@@ -273,7 +280,6 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
 
             s.setValue(5);
             vitesse = 5;
-//            updateAffichage();
             lancer();
         });
 
