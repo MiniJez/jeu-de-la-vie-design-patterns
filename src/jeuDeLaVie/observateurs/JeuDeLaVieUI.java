@@ -16,6 +16,8 @@ import java.awt.*;
 
 import java.util.Hashtable;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * Classe qui gere l'interface du jeu de la vie.
  * DESIGN PATTERN : OBSERVATEUR
@@ -73,7 +75,7 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
     public void arreter() {  this.enCours = false; }
 
     /**
-     * Methode qui permet de lancer l'automate. Lancement d'un thread.
+     * Methode qui permet de lancer l'automate => lancement d'un thread.
      */
     public void lancer() {
         this.enCours = true;
@@ -83,10 +85,11 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
 
     /**
      * Methode qui permet de permet de dessiner les cellules vivantes
-     * @param g Graphics
+     * @param g Graphics (= une case)
      */
     public void paint(Graphics g) {
         super.paint(g);
+
         int xmax = jeu.getXMax();
         int ymax = jeu.getYMax();
 
@@ -101,10 +104,10 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
         for(int x = 0; x < xmax; x++){
             for(int y = 0; y < ymax; y++){
                 Cellule c = jeu.getGrilleXY(x,y);
-
                 // Gestion des couleurs des cellules
                 if( c != null && c.estVivante() ){ g.setColor(coulVivantes); }
                 else{ g.setColor(coulMortes); }
+
                 // Remplir le rectangle
                 g.fillRect(x*val, y*val, val-1, val-1);
             }
@@ -144,9 +147,9 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
 
 /*----------------------------- Gestion de l'affichage du nombre de générations + nombre de cellules vivantes -----------------------------*/
         JPanel nbGen = new JPanel();
+        nbGen.setPreferredSize(new Dimension(300,50));
         infos = new JTextArea(2,20);
         infos.setEditable(false);
-        nbGen.setPreferredSize(new Dimension(300,50));
         infos.setText("Génération numéro "+jeu.getNumGeneration()+"\nCellules vivantes : "+jeu.calculerNbCellulesVivantes());
 
         nbGen.add(infos);
@@ -155,9 +158,9 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
 /*----------------------------- Gestion du positionnement des boutons de lancement - pause - mode 'pas à pas' -----------------------------*/
         JPanel boutons = new JPanel();
         boutons.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 5));
-        JButton btnLancer = new JButton("Lancer", new ImageIcon("assets/play.png"));
-        JButton btnPause = new JButton("Pause", new ImageIcon("assets/pause.png"));
-        JButton btnSuivant = new JButton("Suivant", new ImageIcon("assets/suivant.png"));
+        JButton btnLancer = new JButton("Lancer", new ImageIcon(requireNonNull(this.getClass().getResource("assets/play.png"))));
+        JButton btnPause = new JButton("Pause", new ImageIcon(requireNonNull(this.getClass().getResource("assets/pause.png"))));
+        JButton btnSuivant = new JButton("Suivant", new ImageIcon(requireNonNull(this.getClass().getResource("assets/suivant.png"))));
 
 /*----------------------------- Gestion du bouton de lancement -----------------------------*/
         btnLancer.addActionListener(evenement-> { if(!enCours) lancer(); });
@@ -231,13 +234,15 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
                 default -> jeu.setVisiteur(vClassic);
             }
             if(choix.equals("Canon à planeur")) jeu.initialiserCanon();
+            s.setValue(5);
+            vitesse = 5;
         });
 
         choixRegles.add(regles);
         options.add(choixRegles);
 
 /*----------------------------- Gestion du reset -----------------------------*/
-        JButton reset = new JButton("Réinitialiser", new ImageIcon("assets/reset.png"));
+        JButton reset = new JButton("Réinitialiser", new ImageIcon(requireNonNull(this.getClass().getResource("assets/reset.png"))));
         reset.addActionListener(evenement -> {
             updateAffichage();
             System.out.println("Reinitialiser");
@@ -254,17 +259,20 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
         choixTaille.setLayout(new FlowLayout(FlowLayout.TRAILING, 15, 5));
         choixTaille.add(new JLabel("Taille grille"));
 
-        JComboBox<String> comboBox2 = new JComboBox<>();
-        comboBox2.addItem("80x80");
-        comboBox2.addItem("100x100");
-        comboBox2.addItem("125x125");
-        comboBox2.addItem("150x150");
-        comboBox2.addItem("170x170");
-        comboBox2.setSelectedIndex(0);
+        JComboBox<String> tailles = new JComboBox<>();
+        tailles.addItem("80x80");
+        tailles.addItem("100x100");
+        tailles.addItem("125x125");
+        tailles.addItem("150x150");
+        tailles.addItem("170x170");
+        tailles.setSelectedIndex(0);
 
         // Gestion du changement de taille de la grille
-        comboBox2.addActionListener(evenement -> {
-            String choix = comboBox2.getSelectedItem().toString();
+        tailles.addActionListener(evenement -> {
+            String choix = tailles.getSelectedItem().toString();
+
+            s.setValue(5);
+            vitesse = 5;
 
             int valeur = switch (choix) {
                 case "100x100" -> 100;
@@ -278,12 +286,12 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
             jeu.setYMax(valeur);
             jeu.initialiseGrille();
 
-            s.setValue(5);
-            vitesse = 5;
+            tailles.setSelectedItem(0);
+
             lancer();
         });
 
-        choixTaille.add(comboBox2);
+        choixTaille.add(tailles);
         options.add(choixTaille);
 
 /*----------------------------- Gestion du choix des couleurs des cellules vivantes -----------------------------*/
@@ -351,7 +359,7 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
      */
     @Override
     public void run() {
-        int attente = 0;
+        int attente;
         while(enCours){
             updateAffichage();
             jeu.calculerGenerationSuivante();

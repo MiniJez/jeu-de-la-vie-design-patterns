@@ -106,11 +106,14 @@ public class JeuDeLaVie implements Observable {
         this.numGeneration = 0; // generation initiale
         this.nbCellulesVivantes = 0; // compteur des cellules vivantes
 
+        // Remplir de cellules mortes
         for(int x = 0; x < xMax-1; x++){
             for(int y = 0; y < yMax-1; y++){
                 grille[x][y] = new Cellule(x, y, CelluleEtatMort.getInstance());
             }
         }
+
+        // Placement des cellules vivantes
         getGrilleXY(10,24).vit();
         getGrilleXY(10,25).vit();
         getGrilleXY(11,24).vit();
