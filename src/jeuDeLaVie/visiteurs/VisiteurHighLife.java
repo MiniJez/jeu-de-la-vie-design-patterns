@@ -1,3 +1,7 @@
+/**
+ * @author : CHAUMULON Cassandra
+ */
+
 package jeuDeLaVie.visiteurs;
 
 import jeuDeLaVie.JeuDeLaVie;
@@ -7,6 +11,10 @@ import jeuDeLaVie.cellules.Cellule;
 import jeuDeLaVie.commandes.CommandeMeurt;
 import jeuDeLaVie.commandes.CommandeVit;
 
+/**
+ * Classe qui implemente les regles 'HighLife' du jeu de la vie.
+ * Elle herite de la classe Visiteur.
+ */
 public class VisiteurHighLife extends Visiteur{
 
     /**

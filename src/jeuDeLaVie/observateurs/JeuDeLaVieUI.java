@@ -1,3 +1,7 @@
+/**
+ * @author : CHAUMULON Cassandra
+ */
+
 package jeuDeLaVie.observateurs;
 
 import jeuDeLaVie.JeuDeLaVie;
@@ -158,6 +162,7 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
 /*----------------------------- Gestion du positionnement des boutons de lancement - pause - mode 'pas à pas' -----------------------------*/
         JPanel boutons = new JPanel();
         boutons.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 5));
+        // Creation des boutons avec un label et une icone
         JButton btnLancer = new JButton("Lancer", new ImageIcon(requireNonNull(this.getClass().getResource("assets/play.png"))));
         JButton btnPause = new JButton("Pause", new ImageIcon(requireNonNull(this.getClass().getResource("assets/pause.png"))));
         JButton btnSuivant = new JButton("Suivant", new ImageIcon(requireNonNull(this.getClass().getResource("assets/suivant.png"))));
@@ -172,7 +177,7 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
         btnSuivant.addActionListener(evenement-> {
             if(enCours){ arreter(); }
             else{
-                updateAffichage(); // mettre a jour l'afficahe du numero de la generation + nombre de cellules vivantes
+                updateAffichage(); // mettre a jour l'affichage du numero de la generation + nombre de cellules vivantes
                 jeu.calculerGenerationSuivante();
             }
         });
@@ -225,6 +230,7 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
 
         jeu.setVisiteur(vClassic); // par défaut : mode classique
 
+        // Gestion du changement de regles
         regles.addActionListener(changement -> {
             String choix = regles.getSelectedItem().toString();
 
@@ -243,6 +249,8 @@ public class JeuDeLaVieUI extends JPanel implements Observateur, Runnable {
 
 /*----------------------------- Gestion du reset -----------------------------*/
         JButton reset = new JButton("Réinitialiser", new ImageIcon(requireNonNull(this.getClass().getResource("assets/reset.png"))));
+
+        // Gestion de la reinitialisation
         reset.addActionListener(evenement -> {
             updateAffichage();
             System.out.println("Reinitialiser");

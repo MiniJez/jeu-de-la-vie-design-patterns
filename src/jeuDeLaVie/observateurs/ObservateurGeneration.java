@@ -1,3 +1,7 @@
+/**
+ * @author : CHAUMULON Cassandra
+ */
+
 package jeuDeLaVie.observateurs;
 
 import jeuDeLaVie.JeuDeLaVie;

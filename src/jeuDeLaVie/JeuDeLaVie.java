@@ -1,3 +1,7 @@
+/**
+ * @author : CHAUMULON Cassandra
+ */
+
 package jeuDeLaVie;
 
 import jeuDeLaVie.cellules.Cellule;
@@ -73,7 +77,7 @@ public class JeuDeLaVie implements Observable {
 
     /**
      * Methode qui permet d'initialiser la grille ou de la remettre a zero.
-     * Génération aléatoire des cellules vivantes et mortes
+     * Génération aléatoire des cellules vivantes et mortes.
      */
     public void initialiseGrille() {
         // Création de la grille == tableau de cellules
@@ -83,7 +87,7 @@ public class JeuDeLaVie implements Observable {
 
         for(int x = 0; x < xMax-1; x++){
             for(int y = 0; y < yMax-1; y++){
-                // Generation d'un chiffre aléatoire
+                // Generation d'un chiffre aléatoire => Si 0 == cellule morte, sinon == cellule vivante
                 Random random = new Random();
                 int rand = random.nextInt() % 2;
 

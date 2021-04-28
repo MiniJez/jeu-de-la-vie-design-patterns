@@ -1,3 +1,7 @@
+/**
+ * @author : CHAUMULON Cassandra
+ */
+
 package jeuDeLaVie.visiteurs;
 
 import jeuDeLaVie.JeuDeLaVie;
@@ -8,7 +12,7 @@ import jeuDeLaVie.commandes.CommandeMeurt;
 import jeuDeLaVie.commandes.CommandeVit;
 
 /**
- * Classe qui implemente les regles 'Day & Night' du jeu de la vie.
+ * Classe qui implemente les regles 'Day and Night' du jeu de la vie.
  * Elle herite de la classe Visiteur.
  */
 public class VisiteurDayAndNight extends Visiteur{

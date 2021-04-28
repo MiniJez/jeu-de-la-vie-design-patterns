@@ -1,3 +1,7 @@
+/**
+ * @author : CHAUMULON Cassandra
+ */
+
 package jeuDeLaVie.visiteurs;
 
 import jeuDeLaVie.cellules.Cellule;

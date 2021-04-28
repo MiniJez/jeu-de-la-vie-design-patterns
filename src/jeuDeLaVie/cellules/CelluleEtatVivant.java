@@ -1,9 +1,13 @@
+/**
+ * @author : CHAUMULON Cassandra
+ */
+
 package jeuDeLaVie.cellules;
 
 import jeuDeLaVie.visiteurs.Visiteur;
 
 /**
- * Classe CelluleEtatMort qui implemente l'interface CelluleEtat.
+ * Classe CelluleEtatVivant qui implemente l'interface CelluleEtat.
  * DESIGN PATTERN : SINGLETON
  */
 public class CelluleEtatVivant implements CelluleEtat {
