@@ -1,6 +1,9 @@
 ## Jeu de la vie (*Game of Life*)
 Projet réalisé dans le cadre du module "Design Pattern" de la 3ème année de Licence Informatique (Le Mans Université). 
 
+![capture](doc/capture.png)
+
+
 ### Objectifs :
 
 * Implémenter le principe du "Jeu de la vie" (aussi appelé "Atomate Cellulaire")
@@ -35,6 +38,10 @@ intervalles réguliers) ;
 * Changement de la taille de la grille : 5 tailles possibles ;
 * Possibilité de personnaliser les couleurs des cellules vivantes et mortes.
 
+
+### Démonstration :
+
+![alt text](doc/demo2.gif)
 
 ### Lancement de l'application :
 Pour lancer l’application, il suffit d’exécuter en double-cliquant sur le fichier :
