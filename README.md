@@ -6,7 +6,7 @@ Projet réalisé dans le cadre du module "Design Pattern" de la 3ème année de 
 
 ### Objectifs :
 
-* Implémenter le principe du "Jeu de la vie" (aussi appelé "Atomate Cellulaire")
+* Implémenter le principe du "Jeu de la vie" (aussi appelé "Automate Cellulaire")
 * Implémenter le jeu selon 5 Design Patterns :
   * Etat (*State*)
   * Singleton
