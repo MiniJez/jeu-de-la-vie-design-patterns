@@ -4,12 +4,7 @@ Projet réalisé dans le cadre du module "Design Pattern".
 ### Objectifs :
 
 * Implémenter le principe du "Jeu de la vie" (aussi appelé "Automate Cellulaire")
-* Implémenter le jeu selon 5 Design Patterns :
-  * Etat (*State*)
-  * Singleton
-  * Observateur (*Observer*)
-  * Commande (*Command*)
-  * Visiteur (*Visitor*)
+* Implémenter le jeu selon au moins 3 Design Patterns au choix. Les choix des design patterns doivent être justifié (commentaire dans le code à minima ou mieux, sur un document word ou équivalent.
 
 ### Technologies utilisées :
 * Libre
@@ -33,3 +28,7 @@ intervalles réguliers) ;
 * Possibilité de réinitialiser la grille ;
 * Changement de la taille de la grille : 5 tailles possibles ;
 * Possibilité de personnaliser les couleurs des cellules vivantes et mortes.
+
+### Ressources : 
+
+* Vidéo youtube de science étonnante : https://youtu.be/S-W0NX97DB0?si=FEP-U5DpXoObBRJd
