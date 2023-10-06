@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"jeuDeLaVie"},{"l":"jeuDeLaVie.cellules"},{"l":"jeuDeLaVie.commandes"},{"l":"jeuDeLaVie.observateurs"},{"l":"jeuDeLaVie.visiteurs"}];updateSearchResults();

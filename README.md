@@ -1,8 +1,5 @@
 ## Jeu de la vie (*Game of Life*)
-Projet réalisé dans le cadre du module "Design Pattern" de la 3ème année de Licence Informatique (Le Mans Université). 
-
-![capture](doc/capture.png)
-
+Projet réalisé dans le cadre du module "Design Pattern". 
 
 ### Objectifs :
 
@@ -15,8 +12,7 @@ Projet réalisé dans le cadre du module "Design Pattern" de la 3ème année de 
   * Visiteur (*Visitor*)
 
 ### Technologies utilisées :
-* Java,
-* Swing pour l'interface graphique.
+* Libre
 
 ### Principe :
 
@@ -37,16 +33,3 @@ intervalles réguliers) ;
 * Possibilité de réinitialiser la grille ;
 * Changement de la taille de la grille : 5 tailles possibles ;
 * Possibilité de personnaliser les couleurs des cellules vivantes et mortes.
-
-
-### Démonstration :
-
-![alt text](doc/demo2.gif)
-
-### Lancement de l'application :
-Pour lancer l’application, il suffit d’exécuter en double-cliquant sur le fichier :
- ``Le_super_jeu_de_la_vie.jar``
- 
- Si cela ne fonctionne pas, ouvrir un terminal et taper la commande :
- ``java -jar Le_super_jeu_de_la_vie.jar``
-
