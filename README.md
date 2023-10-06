@@ -32,3 +32,4 @@ intervalles réguliers) ;
 ### Ressources : 
 
 * Vidéo youtube de science étonnante : https://youtu.be/S-W0NX97DB0?si=FEP-U5DpXoObBRJd
+* Simulateur en ligne du jeux de la vie : https://www.dcode.fr/jeu-de-la-vie
